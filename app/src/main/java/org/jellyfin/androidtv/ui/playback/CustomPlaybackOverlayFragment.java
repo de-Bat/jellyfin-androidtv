@@ -300,7 +300,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
         leanbackOverlayFragment.updatePlayState();
 
         // Set initial skip overlay state
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     @Override
@@ -718,7 +718,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
 
         binding.topPanel.startAnimation(slideDown);
         mIsVisible = true;
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     public void hide() {
@@ -727,20 +727,20 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
 
         mIsVisible = false;
         binding.topPanel.startAnimation(fadeOut);
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     private void showChapterPanel() {
         setFadingEnabled(false);
         binding.popupArea.startAnimation(showPopup);
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     private void hidePopupPanel() {
         startFadeTimer();
         binding.popupArea.startAnimation(hidePopup);
         mPopupPanelVisible = false;
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     public void showGuide() {
@@ -761,14 +761,14 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
         if (needLoad) {
             loadGuide();
         }
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     private void hideGuide() {
         tvGuideBinding.getRoot().setVisibility(View.GONE);
         playbackControllerContainer.getValue().getPlaybackController().mVideoManager.setVideoFullSize(true);
         mGuideVisible = false;
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     private void loadGuide() {
@@ -817,7 +817,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
                 mDisplayProgramsTask.execute(mCurrentDisplayChannelStartNdx, mCurrentDisplayChannelEndNdx);
             }
         });
-        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        updateOverlayStates();
     }
 
     DisplayProgramsTask mDisplayProgramsTask;
@@ -1214,8 +1214,14 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
         }
     }
 
+    private void updateOverlayStates() {
+        binding.skipOverlay.setSkipUiEnabled(!mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+        binding.xrayOverlay.setOverlayVisible(mIsVisible && !mGuideVisible && !mPopupPanelVisible);
+    }
+
     public void setCurrentTime(long time) {
         binding.skipOverlay.setCurrentPositionMs(time);
+        binding.xrayOverlay.setCurrentPositionMs(time);
         if (leanbackOverlayFragment != null)
             leanbackOverlayFragment.updateCurrentPosition();
     }
@@ -1242,6 +1248,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
             leanbackOverlayFragment.mediaInfoChanged();
             leanbackOverlayFragment.onFullyInitialized();
             leanbackOverlayFragment.recordingStateChanged();
+            binding.xrayOverlay.setItemId(playbackControllerContainer.getValue().getPlaybackController().isLiveTv() ? null : current.getId());
             // set progress to match duration
             // set other information
             tvGuideBinding.guideCurrentTitle.setText(current.getName());

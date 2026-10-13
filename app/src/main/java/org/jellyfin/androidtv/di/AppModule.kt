@@ -43,6 +43,8 @@ import org.jellyfin.androidtv.ui.playback.external.VlcExternalPlayerApi
 import org.jellyfin.androidtv.ui.playback.nextup.NextUpViewModel
 import org.jellyfin.androidtv.ui.playback.segment.MediaSegmentRepository
 import org.jellyfin.androidtv.ui.playback.segment.MediaSegmentRepositoryImpl
+import org.jellyfin.androidtv.ui.playback.xray.XRayRepository
+import org.jellyfin.androidtv.ui.playback.xray.XRayRepositoryImpl
 import org.jellyfin.androidtv.ui.playback.stillwatching.StillWatchingViewModel
 import org.jellyfin.androidtv.ui.player.photo.PhotoPlayerViewModel
 import org.jellyfin.androidtv.ui.search.SearchFragmentDelegate
@@ -149,6 +151,7 @@ val appModule = module {
 	single<NavigationRepository> { NavigationRepositoryImpl(Destinations.home) }
 	single<SearchRepository> { SearchRepositoryImpl(get()) }
 	single<MediaSegmentRepository> { MediaSegmentRepositoryImpl(get(), get()) }
+	single<XRayRepository> { XRayRepositoryImpl(get()) }
 	single<ExternalAppRepository> { ExternalAppRepository(get(), getAll(), get<DefaultExternalPlayerApi>()) }
 
 	// External player APIs

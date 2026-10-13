@@ -563,6 +563,9 @@
     <string name="segment_action_ask_to_skip">Ask to skip</string>
     <string name="segment_action_nothing">Do nothing</string>
     <string name="segment_action_skip">Skip</string>
+    <string name="xray_title">X-Ray</string>
+    <string name="xray_in_scene">In this scene</string>
+    <string name="xray_more">+%1$d more</string>
     <string name="segment_type_commercial">Commercials</string>
     <string name="segment_type_intro">Intros</string>
     <string name="segment_type_outro">Outros</string>

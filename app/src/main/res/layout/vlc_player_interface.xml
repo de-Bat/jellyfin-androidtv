@@ -116,6 +116,11 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <org.jellyfin.androidtv.ui.playback.xray.XRayOverlayView
+        android:id="@+id/xray_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <org.jellyfin.androidtv.ui.playback.overlay.SkipOverlayView
         android:id="@+id/skip_overlay"
         android:layout_width="match_parent"
